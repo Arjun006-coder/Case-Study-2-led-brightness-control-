@@ -1,0 +1,56 @@
+def led_brightness_controller():
+    brightness = 50  # Initial brightness
+    max_brightness = 100
+    min_brightness = 10
+    step = 10
+    print("LED Brightness Controller")
+    print("Commands:")
+    print("  '+' to increase by 10%, '-' to decrease by 10%")
+    print("  '3+' or '2-' to increase or decrease by multiple steps")
+    print("  'r' to reset brightness to 50%")
+    print("  'q' to quit\n")
+
+    while True:
+        bar_count = brightness // 2  # 10% = 5 bars, 20% = 10 bars, etc.
+        bars = '|' * bar_count
+        print(f"Brightness: {brightness}% [{bars}]")
+
+        command = input("Enter command: ").strip().lower()
+
+        if len(command) > 1:  #tto check if multiple steps
+            multiplier = int(command[0])  # Extract first character as multiplier
+            action = command[1]  # Extract second character as + or -
+        else:
+            multiplier = 1
+            action = command[0]
+
+        change = multiplier * step  # Calculate brightness change
+
+        if action == '+':
+            if brightness + change <= max_brightness:
+                brightness += change
+                print(f"Brightness increased by {change}%.")
+            else:
+                brightness = max_brightness
+                print("Maximum brightness reached! Cannot increase further.")
+
+        elif action == '-':
+            if brightness - change >= min_brightness:
+                brightness -= change
+                print(f"Brightness decreased by {change}%.")
+            else:
+                brightness = min_brightness
+                print("Minimum brightness reached! Cannot decrease further.")
+
+        elif action == 'r':
+            brightness = 50
+            print("Brightness reset to 50%.")
+
+        elif action == 'q':
+            print("Exiting Program. Goodbye!")
+            break
+
+        else:
+            print("Invalid input! Use +, -, '3+', '2-', 'r', or 'q'.")
+
+led_brightness_controller()
